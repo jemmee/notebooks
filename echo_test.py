@@ -1,9 +1,3 @@
-# python3 -m pip install flask
-#
-# python3 -m flask --app echo_test.py run --port 5001
-#
-# curl -X POST http://localhost:5001/hello-world -d "Secret Message"
-
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -22,5 +16,4 @@ def echo(path):
     })
 
 if __name__ == '__main__':
-    # app.run(port=5001)
     app.run(host='0.0.0.0', port=5001, debug=True)
