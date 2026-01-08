@@ -1,9 +1,9 @@
 /*
-as -o assembly_test.o assembly_test.asm
+as -o arm_assembly_test.o arm_assembly_test.asm
 
-ld assembly_test.o -o assembly_test
+ld arm_assembly_test.o -o arm_assembly_test
 
-./assembly_test
+./arm_assembly_test
 */
 
 .section .data
