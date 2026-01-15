@@ -19,7 +19,7 @@ int main() {
   options.create_if_missing = true;
 
   // 1. Open the database
-  Status s = DB::Open(options, "/tmp/testdb", &db);
+  Status s = DB::Open(options, "./rocksdb_test.db", &db);
   if (!s.ok())
     cerr << s.ToString() << endl;
 
@@ -50,7 +50,7 @@ int main() {
 
   // 3. Get the value back
   string returned_value;
-  s = db->Get(ReadOptions(), "1/JHN.3.16", &returned_value);
+  s = db->Get(ReadOptions(), "111/JHN.3.16", &returned_value);
   if (s.ok()) {
     cout << "Retrieved: " << returned_value << endl;
   } else {
