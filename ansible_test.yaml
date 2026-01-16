@@ -1,0 +1,9 @@
+---
+- name: Frontier Greetings
+  hosts: localhost
+  gather_facts: no  # Skips system discovery to make it run faster
+
+  tasks:
+    - name: Shout to the Console
+      ansible.builtin.debug:
+        msg: "Hello World! This is an Ansible 12 Playbook."
