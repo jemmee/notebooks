@@ -1,6 +1,12 @@
 // gcc rdma_test.c -o rdma_test -libverbs
 //
 // ./rdma_test
+//
+// ip -br link show
+// sudo modprobe rdma_rxe
+// sudo rdma link add rxe0 type rxe netdev enp0s1
+// lsmod | grep rdma_rxe
+// sudo rdma link delete rxe0
 
 #include <infiniband/verbs.h>
 #include <stdio.h>
