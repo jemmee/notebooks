@@ -1,6 +1,6 @@
-// gcc -Wall -O2 -o signal_demo signal_demo.c
+// gcc -Wall -O2 -o interrupt_test interrupt_test.c
 //
-// ./signal_demo
+// ./interrupt_test
 //
 // In another terminal you can send signals:
 //     kill -USR1 <pid>
