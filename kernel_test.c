@@ -1,7 +1,7 @@
 // sudo dnf groupinstall "Development Tools" -y
 // sudo dnf install kernel-devel-$(uname -r) kernel-headers-$(uname -r) -y
 //
-// make
+// make -f Makefile_kernel_test
 //
 // sudo insmod kernel_test.ko
 //
