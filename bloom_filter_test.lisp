@@ -49,14 +49,14 @@
     (format t "==========================================~%~%")
     
     (format t "--- Adding items ---~%")
-    (dolist (fruit '("apple" "banana" "cherry"))
-      (bloom-add bf fruit)
-      (format t "Added: ~A~%" fruit))
+    (dolist (items '("Ark" "Manna" "Staff" "Covenant" "Myrrh"))
+      (bloom-add bf items)
+      (format t "Added: ~A~%" items))
 
     (format t "~%Bit Array State: ~A~%" (bloom-filter-bits bf))
 
     (format t "~%--- Testing Membership ---~%")
-    (dolist (test '("apple" "banana" "dragonfruit" "elderberry"))
+    (dolist (test '("Manna" "Staff" "Goliath" "Trumpet"))
       (let ((exists (bloom-exists-p bf test)))
         (format t "Checking '~A': ~A~%" 
                 (format nil "~12A" test) 
