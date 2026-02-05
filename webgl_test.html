@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebGL Demo</title>
+    <style>
+        canvas {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            background: #111;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="glCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('glCanvas');
+        const gl = canvas.getContext('webgl');
+
+        if (!gl) {
+            alert('WebGL not supported');
+        }
+
+        // 1. Vertex Shader: Handles position and size of points
+        const vsSource = `
+            attribute vec2 aPosition;
+            attribute vec3 aColor;
+            varying vec3 vColor;
+            uniform float uAngle;
+            void main() {
+                // Rotation logic
+                float s = sin(uAngle);
+                float c = cos(uAngle);
+                gl_Position = vec4(
+                    aPosition.x * c - aPosition.y * s,
+                    aPosition.x * s + aPosition.y * c,
+                    0.0, 1.0
+                );
+                vColor = aColor;
+            }
+        `;
+
+        // 2. Fragment Shader: Handles the color of pixels
+        const fsSource = `
+            precision mediump float;
+            varying vec3 vColor;
+            void main() {
+                gl_FragColor = vec4(vColor, 1.0);
+            }
+        `;
+
+        // Helper to compile shaders
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            return shader;
+        }
+
+        const program = gl.createProgram();
+        gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vsSource));
+        gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fsSource));
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        // 3. Define the Triangle (X, Y, R, G, B)
+        const vertices = new Float32Array([
+            0.0, 0.5, 1.0, 0.0, 0.0, // Top (Red)
+            -0.5, -0.5, 0.0, 1.0, 0.0, // Bottom Left (Green)
+            0.5, -0.5, 0.0, 0.0, 1.0  // Bottom Right (Blue)
+        ]);
+
+        const buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+        // Link Shaders to Buffer Data
+        const positionLoc = gl.getAttribLocation(program, 'aPosition');
+        gl.enableVertexAttribArray(positionLoc);
+        gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 20, 0);
+
+        const colorLoc = gl.getAttribLocation(program, 'aColor');
+        gl.enableVertexAttribArray(colorLoc);
+        gl.vertexAttribPointer(colorLoc, 3, gl.FLOAT, false, 20, 8);
+
+        const angleLoc = gl.getUniformLocation(program, 'uAngle');
+
+        // 4. Render Loop
+        let angle = 0;
+        function render() {
+            angle += 0.02;
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.uniform1f(angleLoc, angle);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+            requestAnimationFrame(render);
+        }
+        render();
+    </script>
+</body>
+
+</html>
