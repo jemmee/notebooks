@@ -1,0 +1,38 @@
+---
+- name: Proved and Configure Local Development Environment
+  hosts: my_servers
+  gather_facts: true
+
+  vars:
+    project_dir: "{{ ansible_env.HOME }}/ansible_sandbox"
+    app_environment: "development"
+
+  tasks:
+    # Task 1: Ensure our deployment sandbox directory structurally exists
+    - name: Create structured application sandbox directory
+      ansible.builtin.file:
+        path: "{{ project_dir }}"
+        state: directory
+        mode: '0755'
+
+    # Task 2: Dynamically write a configuration file inside that directory
+    - name: Generate a custom application configuration file
+      ansible.builtin.copy:
+        content: |
+          # Generated automatically via Ansible Engine 2026
+          ENV={{ app_environment }}
+          DEPLOY_DATE="{{ ansible_date_time.iso8601 }}"
+          SYSTEM_OS="{{ ansible_distribution }}"
+        dest: "{{ project_dir }}/config.env"
+        mode: '0644'
+
+    # Task 3: Read back the deployment to verify success
+    - name: Verify configuration file contents
+      ansible.builtin.command: "cat {{ project_dir }}/config.env"
+      register: file_contents
+      changed_when: false
+
+    # Task 4: Output the configuration cleanly to the terminal console
+    - name: Print deployment confirmation text
+      ansible.builtin.debug:
+        msg: "Environment configured successfully! Verified output:\n{{ file_contents.stdout }}"
