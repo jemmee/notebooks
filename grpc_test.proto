@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package product;
+
+// Define the service and its methods
+service ProductService {
+  rpc GetProductDetails (ProductRequest) returns (ProductResponse);
+}
+
+// The request message containing the ID we want to look up
+message ProductRequest {
+  string product_id = 1;
+}
+
+// The response message returning the product details
+message ProductResponse {
+  string product_id = 1;
+  string name = 2;
+  double price = 3;
+  int32 stock_quantity = 4;
+}
